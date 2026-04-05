@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: e-waste-backend
+    runtime: node
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: ewaste-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: ewaste-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ewaste-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: ewaste-db
+          property: database
+      - key: FLASK_URL
+        value: http://localhost:5001
+      - key: CV_URL
+        value: http://localhost:5002
+      - key: LOG_LEVEL
+        value: info
+      - key: ML_REQUEST_TIMEOUT_MS
+        value: 60000
+
+databases:
+  - name: ewaste-db
+    databaseName: ewaste_schema
+    user: ewaste_user
+    plan: free
+    region: singapore

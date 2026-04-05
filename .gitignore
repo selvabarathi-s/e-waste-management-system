@@ -37,3 +37,6 @@ cv-service/__pycache__/
 cv-service/*.pyc
 cv-service/data/
 ewaste_classifier.pth
+
+# Local Netlify folder
+.netlify
