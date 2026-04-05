@@ -29,13 +29,43 @@ services:
           name: ewaste-db
           property: database
       - key: FLASK_URL
-        value: http://localhost:5001
+        fromService:
+          type: web
+          name: e-waste-ml
+          envVarKey: RENDER_EXTERNAL_URL
       - key: CV_URL
-        value: http://localhost:5002
+        fromService:
+          type: web
+          name: e-waste-cv
+          envVarKey: RENDER_EXTERNAL_URL
       - key: LOG_LEVEL
         value: info
       - key: ML_REQUEST_TIMEOUT_MS
         value: 60000
+
+  - type: web
+    name: e-waste-ml
+    runtime: python
+    region: singapore
+    plan: free
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.11"
+
+  - type: web
+    name: e-waste-cv
+    runtime: python
+    region: singapore
+    plan: free
+    rootDir: cv-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.11"
 
 databases:
   - name: ewaste-db
@@ -43,3 +73,4 @@ databases:
     user: ewaste_user
     plan: free
     region: singapore
+
