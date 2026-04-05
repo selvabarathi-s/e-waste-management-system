@@ -1,0 +1,4 @@
+Γùç injecting env (10) from .env // tip: Γîÿ enable debugging { debug: true }
+Database & tables initialized successfully with MySQL.
+Simulation & sustainability tables initialized
+{"level":30,"time":1775316746671,"pid":29924,"hostname":"Devil","msg":"Node.js Backend running on http://localhost:5000"}

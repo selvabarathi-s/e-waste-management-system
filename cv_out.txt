@@ -1,0 +1,7 @@
+
+> e-waste-quantification@1.0.0 dev:cv
+> cd cv-service && python app.py
+
+No pretrained model found. Using random weights ù train first for accurate results.
+ * Serving Flask app 'app'
+ * Debug mode: on

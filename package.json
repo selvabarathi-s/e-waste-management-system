@@ -1,0 +1,32 @@
+{
+  "name": "e-waste-quantification",
+  "version": "1.0.0",
+  "description": "AI-based E-Waste Quantification & Forecasting System",
+  "private": true,
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "setup:ml": "cd ml-service && python -m pip install -r requirements.txt && python train.py",
+    "dev:ml": "cd ml-service && python app.py",
+    "setup:cv": "cd cv-service && python -m pip install -r requirements.txt && python train.py",
+    "dev:cv": "cd cv-service && python app.py",
+    "build:frontend": "cd frontend && npm run build",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:ml\"",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:ml\" \"npm run dev:cv\""
+  },
+  "keywords": [
+    "e-waste",
+    "forecasting",
+    "machine-learning",
+    "react",
+    "nodejs",
+    "flask",
+    "computer-vision"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build output
+frontend/dist/
+backend/logs/
+
+# Database
+backend/*.db
+
+# Python
+ml-service/__pycache__/
+ml-service/*.pyc
+ml-service/venv/
+ml-service/models/*.pkl
+ml-service/models/*.json
+!ml-service/models/.gitkeep
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# CV service
+cv-service/__pycache__/
+cv-service/*.pyc
+cv-service/data/
+ewaste_classifier.pth

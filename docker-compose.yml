@@ -1,0 +1,70 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ewaste_schema
+    ports:
+      - "3307:3306"
+    volumes:
+      - ewaste_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      FLASK_ENV: production
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: rootpass
+      DB_NAME: ewaste_schema
+      PORT: 5000
+      FLASK_URL: http://ml-service:5001
+      CV_URL: http://cv-service:5002
+      NODE_ENV: production
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ml-service:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  cv-service:
+    build:
+      context: ./cv-service
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      FLASK_ENV: production
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+volumes:
+  ewaste_mysql_data:
