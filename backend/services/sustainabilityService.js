@@ -92,15 +92,15 @@ async function calculateScoresForAllRegions() {
         recycling_rate_pct, risk_level, sustainability_score, population_density,
         per_capita_waste, score_details)
        VALUES (?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE
-         waste_generated_tonnes = VALUES(waste_generated_tonnes),
-         estimated_recycled_tonnes = VALUES(estimated_recycled_tonnes),
-         recycling_rate_pct = VALUES(recycling_rate_pct),
-         risk_level = VALUES(risk_level),
-         sustainability_score = VALUES(sustainability_score),
-         population_density = VALUES(population_density),
-         per_capita_waste = VALUES(per_capita_waste),
-         score_details = VALUES(score_details)`,
+       ON CONFLICT(region, year) DO UPDATE SET
+         waste_generated_tonnes = excluded.waste_generated_tonnes,
+         estimated_recycled_tonnes = excluded.estimated_recycled_tonnes,
+         recycling_rate_pct = excluded.recycling_rate_pct,
+         risk_level = excluded.risk_level,
+         sustainability_score = excluded.sustainability_score,
+         population_density = excluded.population_density,
+         per_capita_waste = excluded.per_capita_waste,
+         score_details = excluded.score_details`,
       [
         region,
         year,
@@ -155,7 +155,7 @@ async function generateAlerts() {
   for (const score of scores) {
     if (score.risk_level === 'Red') {
       const existing = await query(
-        'SELECT id FROM alerts WHERE region = ? AND alert_type = ? AND year(created_at) = YEAR(CURRENT_DATE) AND acknowledged = 0',
+        'SELECT id FROM alerts WHERE region = ? AND alert_type = ? AND strftime(\'%Y\', created_at) = strftime(\'%Y\', \'now\') AND acknowledged = 0',
         [score.region, 'HIGH_RISK']
       );
       if (existing.length === 0) {
@@ -176,7 +176,7 @@ async function generateAlerts() {
 
     if (score.recycling_rate_pct < 20) {
       const existing = await query(
-        'SELECT id FROM alerts WHERE region = ? AND alert_type = ? AND year(created_at) = YEAR(CURRENT_DATE) AND acknowledged = 0',
+        'SELECT id FROM alerts WHERE region = ? AND alert_type = ? AND strftime(\'%Y\', created_at) = strftime(\'%Y\', \'now\') AND acknowledged = 0',
         [score.region, 'LOW_RECYCLING']
       );
       if (existing.length === 0) {

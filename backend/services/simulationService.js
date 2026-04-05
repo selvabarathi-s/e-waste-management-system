@@ -97,12 +97,12 @@ async function runSimulation(params) {
     );
 
     logger.info(
-      { scenarioId: result.insertId, name, impactPct: impactPct.toFixed(2) },
+      { scenarioId: result.lastID, name, impactPct: impactPct.toFixed(2) },
       'Simulation scenario created'
     );
 
     return {
-      id: result.insertId,
+      id: result.lastID,
       name,
       baseline_tonnes: Math.round(cumulativeBaseline * 100) / 100,
       projected_tonnes: Math.round(cumulativeProjected * 100) / 100,
@@ -134,7 +134,7 @@ async function getScenarios() {
 
 async function deleteScenario(id) {
   const result = await query('DELETE FROM simulation_scenarios WHERE id = ?', [id]);
-  if (result.affectedRows === 0) {
+  if (result.changes === 0) {
     throw new AppError('Scenario not found', 404, 'NOT_FOUND');
   }
   return { deleted: true, id };

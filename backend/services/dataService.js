@@ -66,7 +66,7 @@ async function findOrCreateRegion(regionName) {
     'INSERT INTO regions (name, latitude, longitude, admin_level) VALUES (?, ?, ?, ?)',
     [name, coords.lat, coords.lng, 'area']
   );
-  return { id: r.insertId, latitude: coords.lat, longitude: coords.lng };
+  return { id: r.lastID, latitude: coords.lat, longitude: coords.lng };
 }
 
 async function ensureLocationForRegion(regionName, regionRow) {
@@ -133,7 +133,7 @@ async function uploadFromRows(rows) {
           'INSERT INTO regions (name, latitude, longitude, admin_level) VALUES (?, ?, ?, ?)',
           [region, coords.lat, coords.lng, 'area']
         );
-        reg = { id: r.insertId, latitude: coords.lat, longitude: coords.lng };
+        reg = { id: r.lastID, latitude: coords.lat, longitude: coords.lng };
       }
       regionCache.set(region, reg);
     }
@@ -185,9 +185,8 @@ async function getEwasteData(filters = {}) {
   const limit = Math.min(500, Math.max(1, parseInt(filters.limit, 10) || 100));
   const offset = (page - 1) * limit;
 
-  const [countRows] = await require('../models/db').queryRaw
-    ? await require('../models/db').queryRaw(`SELECT COUNT(*) AS total FROM (${sql.replace(/ORDER BY.*$/, '')}) AS t`, params)
-    : [{ total: 0 }];
+  const countSql = `SELECT COUNT(*) AS total FROM ewaste_data e WHERE 1=1${params.length ? sql.split('WHERE 1=1')[1].split(' ORDER BY')[0] : ''}`;
+  const countRows = await query(countSql, params);
 
   sql += ' ORDER BY e.year DESC LIMIT ? OFFSET ?';
   const rows = await query(sql, [...params, limit, offset]);
@@ -197,7 +196,7 @@ async function getEwasteData(filters = {}) {
     pagination: {
       page,
       limit,
-      total: countRows.total || rows.length,
+      total: (countRows[0] && countRows[0].total) || rows.length,
       hasMore: rows.length === limit,
     },
   };
