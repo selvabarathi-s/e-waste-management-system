@@ -49,7 +49,7 @@ services:
     region: singapore
     plan: free
     rootDir: ml-service
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python train.py
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
@@ -61,7 +61,7 @@ services:
     region: singapore
     plan: free
     rootDir: cv-service
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python train.py
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
