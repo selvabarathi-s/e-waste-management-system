@@ -8,6 +8,7 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [selectedRole, setSelectedRole] = useState('admin');
+  const [isRegister, setIsRegister] = useState(false);
 
   const roles = [
     { id: 'admin', name: 'Admin', icon: <Shield size={40} className="mb-2" />, desc: 'Government / Authority' },
@@ -27,6 +28,21 @@ const Login = ({ onLogin }) => {
       customer: { u: 'customer', p: 'customer123', path: '/customer' },
       service: { u: 'service', p: 'service123', path: '/service' }
     };
+
+    if (isRegister && selectedRole !== 'admin') {
+      if (!username || !password) {
+        setError('Please enter username and password to register.');
+        return;
+      }
+      onLogin({ role: selectedRole, username });
+      const pathMap = {
+        hub: '/hub',
+        customer: '/customer',
+        service: '/service'
+      };
+      navigate(pathMap[selectedRole]);
+      return;
+    }
 
     const creds = validCredentials[selectedRole];
     if (username === creds.u && password === creds.p) {
@@ -67,7 +83,7 @@ const Login = ({ onLogin }) => {
           <div className="card shadow-sm border-0">
             <div className="card-body p-4">
               <h3 className="card-title text-center mb-4">
-                {roles.find(r => r.id === selectedRole).name} Login
+                {roles.find(r => r.id === selectedRole).name} {isRegister && selectedRole !== 'admin' ? 'Register' : 'Login'}
               </h3>
               
               {error && <div className="alert alert-danger">{error}</div>}
@@ -102,9 +118,20 @@ const Login = ({ onLogin }) => {
                 <div className="d-grid gap-2">
                   <button type="submit" className="btn btn-primary btn-lg">
                     <LogIn size={20} className="me-2" />
-                    Sign In
+                    {isRegister && selectedRole !== 'admin' ? 'Sign Up' : 'Sign In'}
                   </button>
                 </div>
+                {selectedRole !== 'admin' && (
+                  <div className="text-center mt-3">
+                    <button 
+                      type="button" 
+                      className="btn btn-link text-decoration-none" 
+                      onClick={() => setIsRegister(!isRegister)}
+                    >
+                      {isRegister ? 'Already have an account? Sign In' : 'New user? Create an account'}
+                    </button>
+                  </div>
+                )}
               </form>
             </div>
           </div>

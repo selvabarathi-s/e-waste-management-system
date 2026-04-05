@@ -72,11 +72,19 @@ const Navbar = ({ user, onLogout, theme, setTheme }) => {
             )}
 
             {user && user.role === 'customer' && (
-              <li className="nav-item">
-                  <Link className={`nav-link ${isActive('/customer')}`} to="/customer" onClick={() => setIsOpen(false)}>
-                    <User size={16} className="me-1" /> Customer Area
+              <>
+                <li className="nav-item">
+                    <Link className={`nav-link ${isActive('/customer')}`} to="/customer" onClick={() => setIsOpen(false)}>
+                      <User size={16} className="me-1" /> Customer Area
+                    </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${isActive('/cv')}`} to="/cv" onClick={() => setIsOpen(false)}>
+                    <Camera size={16} className="me-1" />
+                    CV Detection
                   </Link>
-              </li>
+                </li>
+              </>
             )}
 
             {user && user.role === 'hub' && (

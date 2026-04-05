@@ -189,7 +189,7 @@ const CustomerDashboard = () => {
             </div>
             <div className="card-body">
               <p className="text-muted small mb-3">Schedule a door-step pickup. Our agent will collect your e-waste.</p>
-              <button className="btn btn-dark w-100"><Truck size={18} className="me-2" /> Schedule Pickup Now</button>
+              <button className="btn btn-dark w-100" onClick={() => alert('Pickup scheduled successfully! An agent will contact you soon.')}><Truck size={18} className="me-2" /> Schedule Pickup Now</button>
             </div>
           </div>
         </div>

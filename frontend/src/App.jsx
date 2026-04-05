@@ -81,6 +81,7 @@ function App() {
               {user.role === 'customer' && (
                 <>
                   <Route path="/customer" element={<CustomerDashboard />} />
+                  <Route path="/cv" element={<CV />} />
                   <Route path="*" element={<Navigate to="/customer" replace />} />
                 </>
               )}

@@ -42,22 +42,22 @@
 }
 
 [data-bs-theme="mix"] {
-  --primary: #f43f5e;
-  --primary-dark: #e11d48;
-  --primary-light: #ffedd5;
-  --accent: #d946ef;
-  --accent-light: #fdf4ff;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --bg: #fdf2f8;
-  --bg-card: #ffffff;
-  --text-primary: #4c1d95;
-  --text-secondary: #7c3aed;
-  --text-muted: #a78bfa;
-  --border: #fbcfe8;
-  --shadow-sm: 0 4px 15px rgba(217, 70, 239, 0.1);
-  --shadow-md: 0 8px 25px rgba(217, 70, 239, 0.15);
-  --shadow-lg: 0 15px 35px rgba(217, 70, 239, 0.2);
+  --primary: #00f2fe;
+  --primary-dark: #2bc0e4;
+  --primary-light: #1a2942;
+  --accent: #ff0844;
+  --accent-light: #3a1c35;
+  --warning: #f6d365;
+  --danger: #ff4b1f;
+  --bg: #0b0c10;
+  --bg-card: rgba(25, 28, 36, 0.85);
+  --text-primary: #f0fdfa;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(0, 242, 254, 0.15);
+  --shadow-sm: 0 4px 15px rgba(0, 242, 254, 0.1);
+  --shadow-md: 0 8px 25px rgba(0, 242, 254, 0.2);
+  --shadow-lg: 0 15px 35px rgba(255, 8, 68, 0.25);
 }
 
 * {
