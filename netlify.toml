@@ -8,7 +8,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://e-waste-backend.onrender.com/api/:splat"
+  to = "https://e-waste-backend-xbqk.onrender.com/api/:splat"
   status = 200
   force = true
 
